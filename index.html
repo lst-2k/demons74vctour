@@ -86,7 +86,7 @@
             font-weight: 900; 
             letter-spacing: 1px; 
             box-shadow: 0 0 10px rgba(255, 179, 0, 0.4); 
-        }
+        } 
         
         .scroller { 
             width: 100%; 
@@ -183,7 +183,7 @@
     <div class="scroller">
         <table>
             <thead>
-                <tr><th>Pos</th><th class="player-col">Player</th><th>To Par</th><th>R1</th><th>Total</th><th>Pts</th></tr>
+                <tr><th>Pos</th><th class="player-col">Player</th><th>To Par</th><th>R1</th><th>Pts</th></tr>
             </thead>
             <tbody id="liveBody"></tbody>
         </table>
@@ -240,35 +240,54 @@
         return '<i class="fa-brands fa-steam"></i>';
     }
 
-    function calculatePts(rank, isSig, hasBirds, hasLow) {
+    function getBasePtsForRank(rank, isSig) {
         let base = rank === 1 ? 200 : rank === 2 ? 175 : rank === 3 ? 150 : rank === 4 ? 100 : Math.max(10, 100 - ((rank - 4) * 10));
-        if (isSig) base *= 2;
-        const bVal = isSig ? 20 : 10;
-        let bonus = (hasBirds ? bVal : 0) + (hasLow ? bVal : 0);
-        let bonusLabel = bonus > 0 ? (hasBirds?'🦅':'')+(hasLow?'🔥':'')+`+${bonus}` : "-";
-        return { total: base + bonus, bonusLabel: bonusLabel };
+        return isSig ? base * 2 : base;
     }
 
     function renderLeaderboard(data) {
         const lBody = document.getElementById('liveBody');
         lBody.innerHTML = '';
         const par = parseInt(data.par) || 72;
-        let players = data.players.map(p => {
+        
+        let activePlayers = data.players.map(p => {
             const s = [p.r1, p.r2, p.r3, p.r4].map(v => parseInt(v)||0).filter(v => v > 0);
             const total = s.reduce((a,b) => a+b, 0);
             return { ...p, total, toPar: s.length > 0 ? total - (s.length * par) : 999, active: s.length };
-        }).sort((a,b) => a.toPar - b.toPar);
+        }).filter(p => p.active > 0).sort((a,b) => a.toPar - b.toPar);
 
-        players.forEach((p, i) => {
-            if (p.active === 0) return;
-            let firstIdx = i;
-            while (firstIdx > 0 && players[firstIdx - 1].toPar === p.toPar) firstIdx--;
-            const isTied = (i > 0 && players[i-1].toPar === p.toPar) || (i < players.length-1 && players[i+1].toPar === p.toPar);
-            const rankLabel = isTied ? `T${firstIdx + 1}` : i + 1;
-            const ptsData = calculatePts(firstIdx + 1, data.isSig, (parseInt(p.birdies) > 0), p.isLow);
-            const toParDisp = p.toPar === 0 ? "E" : (p.toPar > 0 ? `+${p.toPar}` : p.toPar);
-            lBody.innerHTML += `<tr><td>${rankLabel}</td><td class="player-col">${getPlatformIcon(p.console)} ${p.name}</td><td class="to-par-cell ${p.toPar < 0 ? 'under-par' : ''}">${toParDisp}</td><td>${p.r1||'-'}</td><td>${p.total}</td><td style="color:var(--fire-yellow); font-weight:bold;">${ptsData.total}</td></tr>`;
-        });
+        // Group players by score to calculate shared tie points
+        let i = 0;
+        while (i < activePlayers.length) {
+            let j = i;
+            while (j < activePlayers.length && activePlayers[j].toPar === activePlayers[i].toPar) {
+                j++;
+            }
+            
+            const tiedCount = j - i;
+            let sumBasePts = 0;
+            
+            // Sum points across all tied position ranks (1-indexed)
+            for (let r = i + 1; r <= j; r++) {
+                sumBasePts += getBasePtsForRank(r, data.isSig);
+            }
+            
+            const splitBasePts = sumBasePts / tiedCount;
+            const rankLabel = tiedCount > 1 ? `T${i + 1}` : `${i + 1}`;
+
+            // Render tied group
+            for (let k = i; k < j; k++) {
+                const p = activePlayers[k];
+                const bVal = data.isSig ? 20 : 10;
+                const bonus = ((parseInt(p.birdies) > 0) ? bVal : 0) + (p.isLow ? bVal : 0);
+                const finalPts = splitBasePts + bonus;
+                const toParDisp = p.toPar === 0 ? "E" : (p.toPar > 0 ? `+${p.toPar}` : p.toPar);
+
+                lBody.innerHTML += `<tr><td>${rankLabel}</td><td class="player-col">${getPlatformIcon(p.console)} ${p.name}</td><td class="to-par-cell ${p.toPar < 0 ? 'under-par' : ''}">${toParDisp}</td><td>${p.r1||'-'}</td><td style="color:var(--fire-yellow); font-weight:bold;">${Number.isInteger(finalPts) ? finalPts : finalPts.toFixed(1)}</td></tr>`;
+            }
+
+            i = j;
+        }
     }
 
     function renderStandings(seasonData) {
