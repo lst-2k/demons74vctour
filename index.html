@@ -1,308 +1,352 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Linksland - Player Profiles</title>
-  <style>
-    :root {
-      /* Palette: Deep Reds, Fiery Oranges, Warm Yellows */
-      --bg-dark: #120707;
-      --bg-card: #1c0d0d;
-      --bg-card-hover: #2a1212;
-      
-      --primary-red: #d92b2b;
-      --accent-orange: #f26419;
-      --highlight-yellow: #f6ae2d;
-      
-      --text-main: #fcfcfc;
-      --text-muted: #e0a98b;
-      --text-dark: #1a0808;
-      
-      --border-color: #4a1515;
-      --shadow-glow: rgba(242, 100, 25, 0.25);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demon's Stock 74 VC Tour - Leaderboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root { 
+            --fire-red: #d32f2f; 
+            --fire-crimson: #800000;
+            --fire-orange: #ff6f00; 
+            --fire-yellow: #ffb300; 
+            --glow-gold: #ffd54f;
+            --dark-bg: #120909; 
+            --card-bg: #1c1313;
+            --table-header: #2a1414;
+            --border-color: #3d1c1c;
+            --text-main: #f5f5f5;
+            --text-muted: #b0a0a0;
+            --ps-blue: #40a9ff; 
+            --xbox-green: #4caf50; 
+            --steam-blue: #90caf9; 
+        }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background-color: var(--dark-bg); 
+            background-image: radial-gradient(circle at top center, #2a0808 0%, #120909 70%);
+            padding: 0; 
+            color: var(--text-main); 
+            margin: 0; 
+            font-size: 14px; 
+            min-height: 100vh;
+        }
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+        .league-banner { 
+            background: #0a0404; 
+            text-align: center; 
+            border-bottom: 3px solid var(--fire-orange); 
+            width: 100%; 
+            box-shadow: 0 4px 20px rgba(255, 111, 0, 0.25);
+        }
 
-    /* Top Banner */
-    header.hero-banner {
-      background: linear-gradient(135deg, #800e0e 0%, #d92b2b 40%, #f26419 75%, #f6ae2d 100%);
-      padding: 2.5rem 1rem;
-      text-align: center;
-      box-shadow: 0 4px 20px var(--shadow-glow);
-      position: relative;
-    }
+        .league-logo { 
+            width: 100%; 
+            max-width: 1000px;
+            height: auto; 
+            display: block; 
+            margin: auto;
+        }
 
-    header.hero-banner h1 {
-      font-size: 2.5rem;
-      color: #ffffff;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    }
+        .main-content { 
+            width: 100%; 
+            max-width: 1000px; 
+            margin: auto; 
+            padding-bottom: 50px; 
+        }
+        
+        .section-header { 
+            padding: 14px 18px; 
+            background: var(--card-bg); 
+            border-bottom: 2px solid var(--border-color); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            transition: 0.3s; 
+        }
+        .section-header.is-major { 
+            background: linear-gradient(90deg, #3a0000 0%, #1c1313 100%); 
+            color: white; 
+            border-bottom: 2px solid var(--fire-yellow); 
+        }
+        
+        .header-text-group { display: flex; flex-direction: column; }
+        #venueName { margin: 0; font-size: 1.3em; font-weight: 800; color: var(--fire-yellow); text-transform: uppercase; letter-spacing: 0.5px; }
+        #eventDateLabel { margin: 4px 0 0 0; font-size: 0.85em; color: var(--text-muted); font-weight: 500; }
+        .is-major #eventDateLabel { color: #e0b0b0; } 
+        
+        .major-tag { 
+            background: linear-gradient(135deg, var(--fire-yellow) 0%, var(--fire-orange) 100%); 
+            color: #000; 
+            padding: 5px 14px; 
+            border-radius: 4px; 
+            font-size: 0.75em; 
+            font-weight: 900; 
+            letter-spacing: 1px; 
+            box-shadow: 0 0 10px rgba(255, 179, 0, 0.4); 
+        }
+        
+        .scroller { 
+            width: 100%; 
+            overflow-x: auto; 
+            background: var(--card-bg); 
+            border-bottom: 2px solid var(--border-color); 
+            margin-bottom: 25px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
 
-    header.hero-banner p {
-      color: #ffe6aa;
-      font-size: 1.1rem;
-      margin-top: 0.5rem;
-      font-weight: 500;
-    }
-
-    /* Container */
-    main {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem 1rem;
-      width: 100%;
-      flex: 1;
-    }
-
-    /* Season Tabs */
-    .tabs-container {
-      display: flex;
-      justify-content: center;
-      gap: 0.75rem;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
-    }
-
-    .tab-btn {
-      background-color: var(--bg-card);
-      border: 2px solid var(--border-color);
-      color: var(--text-muted);
-      padding: 0.6rem 1.4rem;
-      font-size: 1rem;
-      font-weight: 600;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .tab-btn:hover {
-      border-color: var(--accent-orange);
-      color: var(--highlight-yellow);
-      box-shadow: 0 0 10px var(--shadow-glow);
-    }
-
-    .tab-btn.active {
-      background: linear-gradient(45deg, var(--primary-red), var(--accent-orange));
-      color: #ffffff;
-      border-color: var(--highlight-yellow);
-      box-shadow: 0 0 15px var(--shadow-glow);
-    }
-
-    /* Grid Layout */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-
-    /* Player Profile Cards */
-    .player-card {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      overflow: hidden;
-      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .player-card:hover {
-      transform: translateY(-5px);
-      border-color: var(--accent-orange);
-      box-shadow: 0 8px 24px var(--shadow-glow);
-      background-color: var(--bg-card-hover);
-    }
-
-    .card-header {
-      background: linear-gradient(90deg, var(--primary-red), var(--accent-orange));
-      padding: 1rem;
-      color: #ffffff;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .card-header h3 {
-      font-size: 1.25rem;
-      font-weight: 700;
-    }
-
-    .rank-badge {
-      background-color: var(--highlight-yellow);
-      color: var(--text-dark);
-      font-size: 0.85rem;
-      font-weight: 800;
-      padding: 0.25rem 0.6rem;
-      border-radius: 20px;
-      text-transform: uppercase;
-    }
-
-    .card-body {
-      padding: 1.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      flex: 1;
-    }
-
-    .stat-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px dashed var(--border-color);
-      padding-bottom: 0.4rem;
-    }
-
-    .stat-row:last-child {
-      border-bottom: none;
-    }
-
-    .stat-label {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-
-    .stat-value {
-      color: var(--highlight-yellow);
-      font-weight: 600;
-      font-size: 1rem;
-    }
-
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 1.5rem;
-      background-color: #0d0404;
-      border-top: 1px solid var(--border-color);
-      color: var(--text-muted);
-      font-size: 0.85rem;
-    }
-  </style>
+        table { width: 100%; border-collapse: collapse; background: var(--card-bg); }
+        th { 
+            background: var(--table-header); 
+            color: var(--fire-yellow); 
+            padding: 12px 8px; 
+            font-size: 11px; 
+            text-transform: uppercase; 
+            white-space: nowrap; 
+            border-bottom: 1px solid var(--border-color);
+            letter-spacing: 0.5px;
+        }
+        td { 
+            padding: 10px 6px; 
+            border-bottom: 1px solid var(--border-color); 
+            text-align: center; 
+            white-space: nowrap; 
+            font-size: 13px; 
+            color: var(--text-main);
+        }
+        
+        .player-col, .history-content td:nth-child(2) { text-align: left !important; padding-left: 15px; font-weight: 600; }
+        .fa-brands { font-size: 1em; vertical-align: middle; margin-right: 6px; width: 18px; text-align: center; }
+        .fa-playstation { color: var(--ps-blue); } 
+        .fa-xbox { color: var(--xbox-green); } 
+        .fa-steam { color: var(--steam-blue); }
+        
+        .to-par-cell { font-weight: 900; font-size: 1em; background: #150a0a; width: 55px; }
+        .under-par { color: #ff4d4d; text-shadow: 0 0 6px rgba(255, 77, 77, 0.4); }
+        .even-par { color: var(--fire-yellow); font-weight: bold; }
+        .over-par { color: var(--text-muted); }
+        .wins-col { color: var(--fire-orange); font-weight: bold; }
+        .rank-up { color: #4caf50; font-size: 0.85em; }
+        .rank-down { color: #ff4d4d; font-size: 0.85em; }
+        .rank-steady { color: #777; font-size: 0.85em; }
+        .trend-col { width: 30px; text-align: center; }
+        
+        h3 { 
+            color: var(--fire-orange); 
+            font-size: 1.1em; 
+            padding: 12px 15px; 
+            margin: 0; 
+            background: #150a0a; 
+            border-bottom: 1px solid var(--border-color); 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+        }
+        
+        .history-header { 
+            background: var(--card-bg); 
+            padding: 12px 15px; 
+            border: 1px solid var(--border-color); 
+            margin-top: 5px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-left: 5px solid var(--fire-orange); 
+            font-size: 13px !important; 
+            text-transform: none; 
+            color: var(--text-main);
+        }
+        .history-header.major-border { border-left-color: var(--fire-yellow); }
+        .history-header::after { content: '\f0d7'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--fire-yellow); }
+        .history-content { display: none; background: var(--card-bg); border: 1px solid var(--border-color); border-top: none; padding: 10px; }
+    </style>
 </head>
 <body>
 
-  <!-- Top Red/Orange/Yellow Gradient Banner -->
-  <header class="hero-banner">
-    <h1>Linksland Dashboard</h1>
-    <p>Seasonal Leaderboards & Player Profiles</p>
-  </header>
+<header class="league-banner">
+    <img src="logo.jpg" alt="Demon's Stock 74 VC Tour" class="league-logo" onerror="this.style.display='none'">
+</header>
 
-  <main>
-    <!-- Dynamic Season Navigation Tabs -->
-    <div class="tabs-container" id="season-tabs">
-      <button class="tab-btn active" data-season="season1">Season 1</button>
-      <button class="tab-btn" data-season="season2">Season 2</button>
-      <button class="tab-btn" data-season="season3">Season 3</button>
-      <button class="tab-btn" data-season="season4">Season 4</button>
-      <button class="tab-btn" data-season="season5">Season 5</button>
+<div class="main-content">
+    <div id="headerBar" class="section-header">
+        <div class="header-text-group">
+            <h2 id="venueName">🔥 Loading...</h2>
+            <p id="eventDateLabel"></p>
+        </div>
+        <div id="sigStatus"></div>
     </div>
 
-    <!-- Cards Container -->
-    <div class="cards-grid" id="player-grid">
-      <!-- Player cards will be rendered here dynamically -->
+    <h3>Tournament Results</h3>
+    <div class="scroller">
+        <table>
+            <thead>
+                <tr><th>Pos</th><th class="player-col">Player</th><th>To Par</th><th>R1</th><th>Total</th><th>Pts</th></tr>
+            </thead>
+            <tbody id="liveBody"></tbody>
+        </table>
     </div>
-  </main>
 
-  <footer>
-    <p>&copy; Linksland. Powered by merged season dataset.</p>
-  </footer>
+    <h3>Season Standings</h3>
+    <div class="scroller">
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th class="trend-col"></th> <th class="player-col">Player</th>
+                    <th>Played</th>
+                    <th>Wins</th>
+                    <th>ACC</th>
+                    <th>Total Points</th>
+                </tr>
+            </thead>
+            <tbody id="seasonBody"></tbody>
+        </table>
+    </div>
 
-  <script>
-    let allData = {};
+    <div id="historyContainer"></div>
+</div>
 
-    async function init() {
-      try {
-        const response = await fetch('data.json');
-        allData = await response.json();
-        
-        setupTabListeners();
-        const defaultSeason = Object.keys(allData)[0] || 'season1';
-        renderCards(defaultSeason);
-      } catch (err) {
-        console.error('Failed to load data.json:', err);
-        document.getElementById('player-grid').innerHTML = 
-          `<p style="color: var(--primary-red); grid-column: 1/-1; text-align: center;">
-            Failed to load data. Please ensure <strong>data.json</strong> is in the same directory.
-          </p>`;
-      }
+<script>
+    async function loadLeaderboard() {
+        try {
+            const response = await fetch('data.json');
+            const data = await response.json();
+            
+            const headerBar = document.getElementById('headerBar');
+            document.getElementById('venueName').innerText = `🔥 ${data.venue || 'Tournament'}`;
+            document.getElementById('eventDateLabel').innerText = data.date || '';
+            
+            if(data.isSig) {
+                headerBar.classList.add('is-major');
+                document.getElementById('sigStatus').innerHTML = '<span class="major-tag">🏆 MAJOR</span>';
+            } else {
+                headerBar.classList.remove('is-major');
+                document.getElementById('sigStatus').innerHTML = '';
+            }
+
+            renderLeaderboard(data);
+            renderStandings(data.season); 
+            renderHistory(data.history);
+        } catch (e) { console.error("Error loading data.json:", e); }
     }
 
-    function setupTabListeners() {
-      const tabs = document.querySelectorAll('.tab-btn');
-      tabs.forEach(tab => {
-        tab.addEventListener('click', (e) => {
-          tabs.forEach(t => t.classList.remove('active'));
-          e.target.classList.add('active');
-          
-          const selectedSeason = e.target.getAttribute('data-season');
-          renderCards(selectedSeason);
+    function getPlatformIcon(p) {
+        const c = (p || "").toLowerCase();
+        if (c.includes('ps')) return '<i class="fa-brands fa-playstation"></i>';
+        if (c.includes('xb')) return '<i class="fa-brands fa-xbox"></i>';
+        return '<i class="fa-brands fa-steam"></i>';
+    }
+
+    function calculatePts(rank, isSig, hasBirds, hasLow) {
+        let base = rank === 1 ? 200 : rank === 2 ? 175 : rank === 3 ? 150 : rank === 4 ? 100 : Math.max(10, 100 - ((rank - 4) * 10));
+        if (isSig) base *= 2;
+        const bVal = isSig ? 20 : 10;
+        let bonus = (hasBirds ? bVal : 0) + (hasLow ? bVal : 0);
+        let bonusLabel = bonus > 0 ? (hasBirds?'🦅':'')+(hasLow?'🔥':'')+`+${bonus}` : "-";
+        return { total: base + bonus, bonusLabel: bonusLabel };
+    }
+
+    function renderLeaderboard(data) {
+        const lBody = document.getElementById('liveBody');
+        lBody.innerHTML = '';
+        const par = parseInt(data.par) || 72;
+        let players = data.players.map(p => {
+            const s = [p.r1, p.r2, p.r3, p.r4].map(v => parseInt(v)||0).filter(v => v > 0);
+            const total = s.reduce((a,b) => a+b, 0);
+            return { ...p, total, toPar: s.length > 0 ? total - (s.length * par) : 999, active: s.length };
+        }).sort((a,b) => a.toPar - b.toPar);
+
+        players.forEach((p, i) => {
+            if (p.active === 0) return;
+            let firstIdx = i;
+            while (firstIdx > 0 && players[firstIdx - 1].toPar === p.toPar) firstIdx--;
+            const isTied = (i > 0 && players[i-1].toPar === p.toPar) || (i < players.length-1 && players[i+1].toPar === p.toPar);
+            const rankLabel = isTied ? `T${firstIdx + 1}` : i + 1;
+            const ptsData = calculatePts(firstIdx + 1, data.isSig, (parseInt(p.birdies) > 0), p.isLow);
+            const toParDisp = p.toPar === 0 ? "E" : (p.toPar > 0 ? `+${p.toPar}` : p.toPar);
+            lBody.innerHTML += `<tr><td>${rankLabel}</td><td class="player-col">${getPlatformIcon(p.console)} ${p.name}</td><td class="to-par-cell ${p.toPar < 0 ? 'under-par' : ''}">${toParDisp}</td><td>${p.r1||'-'}</td><td>${p.total}</td><td style="color:var(--fire-yellow); font-weight:bold;">${ptsData.total}</td></tr>`;
         });
-      });
     }
 
-    function renderCards(seasonKey) {
-      const grid = document.getElementById('player-grid');
-      grid.innerHTML = '';
-
-      const players = allData[seasonKey] || [];
-
-      if (players.length === 0) {
-        grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">No data available for ${seasonKey}.</p>`;
-        return;
-      }
-
-      players.forEach((player, index) => {
-        const card = document.createElement('div');
-        card.className = 'player-card';
-
-        const name = player.name || player.player || `Player ${index + 1}`;
-        const rank = player.rank || `#${index + 1}`;
+    function renderStandings(seasonData) {
+        const sBody = document.getElementById('seasonBody');
+        if (!sBody || !seasonData) return;
         
-        let statsHtml = '';
-        for (const [key, value] of Object.entries(player)) {
-          // Exclude name, rank, and r2 (or round 2)
-          if (['name', 'player', 'rank', 'r2', 'round 2', 'round2'].includes(key.toLowerCase())) continue;
-          
-          statsHtml += `
-            <div class="stat-row">
-              <span class="stat-label">${key.toUpperCase()}</span>
-              <span class="stat-value">${value}</span>
-            </div>
-          `;
-        }
+        const sorted = Object.entries(seasonData).map(([name, info]) => ({ 
+            name, 
+            ...info 
+        })).sort((a, b) => b.points - a.points);
 
-        card.innerHTML = `
-          <div class="card-header">
-            <h3>${name}</h3>
-            <span class="rank-badge">${rank}</span>
-          </div>
-          <div class="card-body">
-            ${statsHtml}
-          </div>
-        `;
+        sBody.innerHTML = '';
+        sorted.forEach((p, i) => {
+            const currentRank = i + 1;
+            const previousRank = parseInt(p.prevRank) || currentRank;
+            const accVal = p.acc || 0;
+            const accDisp = accVal === 0 ? "E" : (accVal > 0 ? `+${accVal}` : accVal);
+            const accClass = accVal < 0 ? "under-par" : (accVal === 0 ? "even-par" : "");
+            
+            let trendHtml = '<span class="rank-steady">●</span>';
+            if (currentRank < previousRank) {
+                trendHtml = '<span class="rank-up"><i class="fa-solid fa-caret-up"></i></span>';
+            } else if (currentRank > previousRank) {
+                trendHtml = '<span class="rank-down"><i class="fa-solid fa-caret-down"></i></span>';
+            }
 
-        grid.appendChild(card);
-      });
+            let firstIdx = i;
+            while (firstIdx > 0 && sorted[firstIdx - 1].points === p.points) firstIdx--;
+            const isTied = (i > 0 && sorted[i-1].points === p.points) || (i < sorted.length-1 && sorted[i+1].points === p.points);
+            const rankLabel = isTied ? `T${firstIdx + 1}` : currentRank;
+            
+            sBody.innerHTML += `
+            <tr>
+                <td>${rankLabel}</td>
+                <td class="trend-col">${trendHtml}</td>
+                <td class="player-col">${getPlatformIcon(p.console)} ${p.name}</td>
+                <td>${p.eventsPlayed || 0}</td>
+                <td style="font-weight:bold; color:var(--fire-orange);">${p.wins || 0}</td>
+                <td style="font-weight:bold;" class="${accClass}">${accDisp}</td>
+                <td style="color:var(--fire-yellow); font-weight:bold;">${p.points}</td>
+            </tr>`;
+        });
     }
 
-    init();
-  </script>
+    function renderHistory(historyHTML) {
+        const hDiv = document.getElementById('historyContainer');
+        if (hDiv && historyHTML) { 
+            let temp = document.createElement('div');
+            temp.innerHTML = historyHTML.replace(/>\+999</g, '>--<');
+            
+            temp.querySelectorAll('.history-header').forEach(header => {
+                if (header.innerText.includes('🏆')) {
+                    header.classList.add('major-border');
+                }
+            });
+
+            temp.querySelectorAll('td').forEach(td => {
+                const val = td.innerText.trim();
+                if (val === 'E') {
+                    td.classList.add('even-par');
+                } else if (val.startsWith('-')) {
+                    td.classList.add('under-par');
+                } else if (val.startsWith('+')) {
+                    td.classList.add('over-par');
+                }
+            });
+            
+            hDiv.innerHTML = `<h3>Weekly History</h3>` + temp.innerHTML; 
+        }
+    }
+
+    function toggleHistory(header) {
+        const content = header.nextElementSibling;
+        const isVisible = content.style.display === "block";
+        document.querySelectorAll('.history-content').forEach(c => c.style.display = "none");
+        content.style.display = isVisible ? "none" : "block";
+    }
+    window.onload = loadLeaderboard;
+</script>
 </body>
 </html>
