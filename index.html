@@ -291,46 +291,61 @@
     }
 
     function renderStandings(seasonData) {
-        const sBody = document.getElementById('seasonBody');
-        if (!sBody || !seasonData) return;
-        
-        const sorted = Object.entries(seasonData).map(([name, info]) => ({ 
-            name, 
-            ...info 
-        })).sort((a, b) => b.points - a.points);
+		const sBody = document.getElementById('seasonBody');
+		if (!sBody || !seasonData) return;
+		
+		// Sort players by total points descending
+		const sorted = Object.entries(seasonData).map(([name, info]) => ({ 
+			name, 
+			...info 
+		})).sort((a, b) => b.points - a.points);
 
-        sBody.innerHTML = '';
-        sorted.forEach((p, i) => {
-            const currentRank = i + 1;
-            const previousRank = parseInt(p.prevRank) || currentRank;
-            const accVal = p.acc || 0;
-            const accDisp = accVal === 0 ? "E" : (accVal > 0 ? `+${accVal}` : accVal);
-            const accClass = accVal < 0 ? "under-par" : (accVal === 0 ? "even-par" : "");
-            
-            let trendHtml = '<span class="rank-steady">●</span>';
-            if (currentRank < previousRank) {
-                trendHtml = '<span class="rank-up"><i class="fa-solid fa-caret-up"></i></span>';
-            } else if (currentRank > previousRank) {
-                trendHtml = '<span class="rank-down"><i class="fa-solid fa-caret-down"></i></span>';
-            }
+		sBody.innerHTML = '';
 
-            let firstIdx = i;
-            while (firstIdx > 0 && sorted[firstIdx - 1].points === p.points) firstIdx--;
-            const isTied = (i > 0 && sorted[i-1].points === p.points) || (i < sorted.length-1 && sorted[i+1].points === p.points);
-            const rankLabel = isTied ? `T${firstIdx + 1}` : currentRank;
-            
-            sBody.innerHTML += `
-            <tr>
-                <td>${rankLabel}</td>
-                <td class="trend-col">${trendHtml}</td>
-                <td class="player-col">${getPlatformIcon(p.console)} ${p.name}</td>
-                <td>${p.eventsPlayed || 0}</td>
-                <td style="font-weight:bold; color:var(--fire-orange);">${p.wins || 0}</td>
-                <td style="font-weight:bold;" class="${accClass}">${accDisp}</td>
-                <td style="color:var(--fire-yellow); font-weight:bold;">${p.points}</td>
-            </tr>`;
-        });
-    }
+		let i = 0;
+		while (i < sorted.length) {
+			let j = i;
+			// Group players who are tied on points
+			while (j < sorted.length && sorted[j].points === sorted[i].points) {
+				j++;
+			}
+			
+			const tiedCount = j - i;
+			const rankLabel = tiedCount > 1 ? `T${i + 1}` : `${i + 1}`;
+
+			for (let k = i; k < j; k++) {
+				const p = sorted[k];
+				const previousRank = parseInt(p.prevRank) || (i + 1);
+				const currentRank = i + 1;
+				const accVal = p.acc || 0;
+				const accDisp = accVal === 0 ? "E" : (accVal > 0 ? `+${accVal}` : accVal);
+				const accClass = accVal < 0 ? "under-par" : (accVal === 0 ? "even-par" : "");
+				
+				let trendHtml = '<span class="rank-steady">●</span>';
+				if (currentRank < previousRank) {
+					trendHtml = '<span class="rank-up"><i class="fa-solid fa-caret-up"></i></span>';
+				} else if (currentRank > previousRank) {
+					trendHtml = '<span class="rank-down"><i class="fa-solid fa-caret-down"></i></span>';
+				}
+
+				const ptsVal = Number(p.points);
+				const ptsDisp = Number.isInteger(ptsVal) ? ptsVal : ptsVal.toFixed(1);
+
+				sBody.innerHTML += `
+				<tr>
+					<td>${rankLabel}</td>
+					<td class="trend-col">${trendHtml}</td>
+					<td class="player-col">${getPlatformIcon(p.console)} ${p.name}</td>
+					<td>${p.eventsPlayed || 0}</td>
+					<td style="font-weight:bold; color:var(--fire-orange);">${p.wins || 0}</td>
+					<td style="font-weight:bold;" class="${accClass}">${accDisp}</td>
+					<td style="color:var(--fire-yellow); font-weight:bold;">${ptsDisp}</td>
+				</tr>`;
+			}
+
+			i = j;
+		}
+	}
 
     function renderHistory(historyHTML) {
         const hDiv = document.getElementById('historyContainer');
