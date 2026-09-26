@@ -211,38 +211,49 @@
 </div>
 
 <script>
-    async function loadLeaderboard() {
-        try {
-            const response = await fetch('data.json');
-            const data = await response.json();
-            
-            // Header Info
-            const headerBar = document.getElementById('headerBar');
-            document.getElementById('venueName').innerText = `🔥 ${data.currentEvent.venue || 'Tournament'}`;
-            document.getElementById('eventDateLabel').innerText = data.currentEvent.date || '';
-            
-            if(data.currentEvent.isSig) {
-                headerBar.classList.add('is-major');
-                document.getElementById('sigStatus').innerHTML = '<span class="major-tag">🏆 MAJOR</span>';
-            } else {
-                headerBar.classList.remove('is-major');
-                document.getElementById('sigStatus').innerHTML = '';
-            }
+	async function loadLeaderboard() {
+		try {
+			const response = await fetch('data.json');
+			const data = await response.json();
+			
+			// Support both new structure (data.currentEvent) and old structure (data.venue)
+			const currentEvent = data.currentEvent || {
+				venue: data.venue,
+				date: data.date,
+				par: data.par,
+				isSig: data.isSig,
+				players: data.players
+			};
 
-            // 1. Process Current Event
-            const currentResults = processEventResults(data.currentEvent);
-            renderLeaderboard(currentResults);
+			const headerBar = document.getElementById('headerBar');
+			document.getElementById('venueName').innerText = `🔥 ${currentEvent.venue || 'Tournament'}`;
+			document.getElementById('eventDateLabel').innerText = currentEvent.date || '';
+			
+			if(currentEvent.isSig) {
+				headerBar.classList.add('is-major');
+				document.getElementById('sigStatus').innerHTML = '<span class="major-tag">🏆 MAJOR</span>';
+			} else {
+				headerBar.classList.remove('is-major');
+				document.getElementById('sigStatus').innerHTML = '';
+			}
 
-            // 2. Process All Past Events + Current Event for Season Standings
-            const allEvents = [...(data.pastEvents || []), data.currentEvent];
-            const seasonStats = calculateSeasonStandings(allEvents);
-            renderStandings(seasonStats);
+			// Render current tournament
+			const currentResults = processEventResults(currentEvent);
+			renderLeaderboard(currentResults);
 
-            // 3. Render Dynamic History
-            renderHistory(data.pastEvents || []);
+			// Process season standings
+			if (data.pastEvents) {
+				const allEvents = [...data.pastEvents, currentEvent];
+				const seasonStats = calculateSeasonStandings(allEvents);
+				renderStandings(seasonStats);
+				renderHistory(data.pastEvents);
+			} else if (data.season) {
+				renderStandings(data.season);
+				renderHistory(data.history);
+			}
 
-        } catch (e) { console.error("Error loading data.json:", e); }
-    }
+		} catch (e) { console.error("Error loading data.json:", e); }
+	}
 
     function getPlatformIcon(p) {
         const c = (p || "").toLowerCase();
