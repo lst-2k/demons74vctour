@@ -8,10 +8,8 @@
     <style>
         :root { 
             --fire-red: #d32f2f; 
-            --fire-crimson: #800000;
             --fire-orange: #ff6f00; 
             --fire-yellow: #ffb300; 
-            --glow-gold: #ffd54f;
             --dark-bg: #120909; 
             --card-bg: #1c1313;
             --table-header: #2a1414;
@@ -64,7 +62,6 @@
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            transition: 0.3s; 
         }
         .section-header.is-major { 
             background: linear-gradient(90deg, #3a0000 0%, #1c1313 100%); 
@@ -75,7 +72,6 @@
         .header-text-group { display: flex; flex-direction: column; }
         #venueName { margin: 0; font-size: 1.3em; font-weight: 800; color: var(--fire-yellow); text-transform: uppercase; letter-spacing: 0.5px; }
         #eventDateLabel { margin: 4px 0 0 0; font-size: 0.85em; color: var(--text-muted); font-weight: 500; }
-        .is-major #eventDateLabel { color: #e0b0b0; } 
         
         .major-tag { 
             background: linear-gradient(135deg, var(--fire-yellow) 0%, var(--fire-orange) 100%); 
@@ -117,7 +113,7 @@
             color: var(--text-main);
         }
         
-        .player-col, .history-content td:nth-child(2) { text-align: left !important; padding-left: 15px; font-weight: 600; }
+        .player-col { text-align: left !important; padding-left: 15px; font-weight: 600; }
         .fa-brands { font-size: 1em; vertical-align: middle; margin-right: 6px; width: 18px; text-align: center; }
         .fa-playstation { color: var(--ps-blue); } 
         .fa-xbox { color: var(--xbox-green); } 
@@ -128,10 +124,6 @@
         .even-par { color: var(--fire-yellow); font-weight: bold; }
         .over-par { color: var(--text-muted); }
         .wins-col { color: var(--fire-orange); font-weight: bold; }
-        .rank-up { color: #4caf50; font-size: 0.85em; }
-        .rank-down { color: #ff4d4d; font-size: 0.85em; }
-        .rank-steady { color: #777; font-size: 0.85em; }
-        .trend-col { width: 30px; text-align: center; }
         
         h3 { 
             color: var(--fire-orange); 
@@ -155,8 +147,7 @@
             justify-content: space-between; 
             align-items: center; 
             border-left: 5px solid var(--fire-orange); 
-            font-size: 13px !important; 
-            text-transform: none; 
+            font-size: 13px; 
             color: var(--text-main);
         }
         .history-header.major-border { border-left-color: var(--fire-yellow); }
@@ -195,7 +186,6 @@
             <thead>
                 <tr>
                     <th>Rank</th>
-                    <th class="trend-col"></th> 
                     <th class="player-col">Player</th>
                     <th>Played</th>
                     <th>Wins</th>
@@ -216,11 +206,14 @@
             const response = await fetch('data.json');
             const data = await response.json();
             
-            const headerBar = document.getElementById('headerBar');
-            document.getElementById('venueName').innerText = `🔥 ${data.venue || 'Tournament'}`;
-            document.getElementById('eventDateLabel').innerText = data.date || '';
+            const currentEvent = data.currentEvent;
+            const pastEvents = data.pastEvents || [];
             
-            if(data.isSig) {
+            const headerBar = document.getElementById('headerBar');
+            document.getElementById('venueName').innerText = `🔥 ${currentEvent.venue || 'Tournament'}`;
+            document.getElementById('eventDateLabel').innerText = currentEvent.date || '';
+            
+            if(currentEvent.isSig) {
                 headerBar.classList.add('is-major');
                 document.getElementById('sigStatus').innerHTML = '<span class="major-tag">🏆 MAJOR</span>';
             } else {
@@ -228,9 +221,14 @@
                 document.getElementById('sigStatus').innerHTML = '';
             }
 
-            renderLeaderboard(data);
-            renderStandings(data.season); 
-            renderHistory(data.history);
+            renderLeaderboard(currentEvent);
+            
+            // Calculate season stats from all events (past + current)
+            const allEvents = [...pastEvents, currentEvent];
+            const seasonStats = calculateSeasonStandings(allEvents);
+            renderStandings(seasonStats);
+            renderHistory(pastEvents);
+
         } catch (e) { console.error("Error loading data.json:", e); }
     }
 
@@ -246,18 +244,14 @@
         return isSig ? base * 2 : base;
     }
 
-    function renderLeaderboard(data) {
-        const lBody = document.getElementById('liveBody');
-        lBody.innerHTML = '';
-        const par = parseInt(data.par) || 72;
-        
-        let activePlayers = data.players.map(p => {
-            const s = [p.r1].map(v => parseInt(v)||0).filter(v => v > 0);
-            const total = s.reduce((a,b) => a+b, 0);
-            return { ...p, total, toPar: s.length > 0 ? total - (s.length * par) : 999, active: s.length };
-        }).filter(p => p.active > 0).sort((a,b) => a.toPar - b.toPar);
+    function processEventResults(eventData) {
+        const par = parseInt(eventData.par) || 72;
+        let activePlayers = eventData.players.map(p => {
+            const r1Val = parseInt(p.r1) || 0;
+            return { ...p, r1Val, toPar: r1Val > 0 ? r1Val - par : 999, active: r1Val > 0 };
+        }).filter(p => p.active).sort((a,b) => a.toPar - b.toPar);
 
-        // Group players by score to calculate split tie points
+        let processed = [];
         let i = 0;
         while (i < activePlayers.length) {
             let j = i;
@@ -267,103 +261,143 @@
             
             const tiedCount = j - i;
             let sumBasePts = 0;
-            
-            // Sum points for all tied positions (1-indexed ranks)
             for (let r = i + 1; r <= j; r++) {
-                sumBasePts += getBasePtsForRank(r, data.isSig);
+                sumBasePts += getBasePtsForRank(r, eventData.isSig);
             }
             
             const splitPts = sumBasePts / tiedCount;
             const rankLabel = tiedCount > 1 ? `T${i + 1}` : `${i + 1}`;
 
             for (let k = i; k < j; k++) {
-                const p = activePlayers[k];
-                const toParDisp = p.toPar === 0 ? "E" : (p.toPar > 0 ? `+${p.toPar}` : p.toPar);
-                const ptsDisp = Number.isInteger(splitPts) ? splitPts : splitPts.toFixed(1);
-
-                lBody.innerHTML += `<tr>
-                    <td>${rankLabel}</td>
-                    <td class="player-col">${getPlatformIcon(p.console)} ${p.name}</td>
-                    <td class="to-par-cell ${p.toPar < 0 ? 'under-par' : (p.toPar === 0 ? 'even-par' : '')}">${toParDisp}</td>
-                    <td>${p.r1||'-'}</td>
-                    <td style="color:var(--fire-yellow); font-weight:bold;">${ptsDisp}</td>
-                </tr>`;
+                processed.push({
+                    ...activePlayers[k],
+                    rankLabel,
+                    rankPos: i + 1,
+                    pts: splitPts
+                });
             }
-
             i = j;
         }
+        return processed;
     }
 
-    function renderStandings(seasonData) {
+    function renderLeaderboard(eventData) {
+        const lBody = document.getElementById('liveBody');
+        lBody.innerHTML = '';
+        const results = processEventResults(eventData);
+
+        results.forEach(p => {
+            const toParDisp = p.toPar === 0 ? "E" : (p.toPar > 0 ? `+${p.toPar}` : p.toPar);
+            const ptsDisp = Number.isInteger(p.pts) ? p.pts : p.pts.toFixed(1);
+
+            lBody.innerHTML += `<tr>
+                <td>${p.rankLabel}</td>
+                <td class="player-col">${getPlatformIcon(p.console)} ${p.name}</td>
+                <td class="to-par-cell ${p.toPar < 0 ? 'under-par' : (p.toPar === 0 ? 'even-par' : '')}">${toParDisp}</td>
+                <td>${p.r1Val || '-'}</td>
+                <td style="color:var(--fire-yellow); font-weight:bold;">${ptsDisp}</td>
+            </tr>`;
+        });
+    }
+
+    function calculateSeasonStandings(allEvents) {
+        let standings = {};
+
+        allEvents.forEach(event => {
+            const results = processEventResults(event);
+            results.forEach(p => {
+                if (!standings[p.name]) {
+                    standings[p.name] = {
+                        name: p.name,
+                        console: p.console,
+                        eventsPlayed: 0,
+                        wins: 0,
+                        accToPar: 0,
+                        points: 0
+                    };
+                }
+
+                standings[p.name].eventsPlayed += 1;
+                standings[p.name].accToPar += p.toPar;
+                standings[p.name].points += p.pts;
+                if (p.rankPos === 1 && p.rankLabel === "1") {
+                    standings[p.name].wins += 1;
+                }
+            });
+        });
+
+        return Object.values(standings).sort((a,b) => b.points - a.points);
+    }
+
+    function renderStandings(sorted) {
         const sBody = document.getElementById('seasonBody');
-        if (!sBody || !seasonData) return;
-        
-        const sorted = Object.entries(seasonData).map(([name, info]) => ({ 
-            name, 
-            ...info 
-        })).sort((a, b) => b.points - a.points);
+        if (!sBody) return;
 
         sBody.innerHTML = '';
         sorted.forEach((p, i) => {
             const currentRank = i + 1;
-            const previousRank = parseInt(p.prevRank) || currentRank;
-            const accVal = p.acc || 0;
+            const accVal = p.accToPar;
             const accDisp = accVal === 0 ? "E" : (accVal > 0 ? `+${accVal}` : accVal);
             const accClass = accVal < 0 ? "under-par" : (accVal === 0 ? "even-par" : "");
-            
-            let trendHtml = '<span class="rank-steady">●</span>';
-            if (currentRank < previousRank) {
-                trendHtml = '<span class="rank-up"><i class="fa-solid fa-caret-up"></i></span>';
-            } else if (currentRank > previousRank) {
-                trendHtml = '<span class="rank-down"><i class="fa-solid fa-caret-down"></i></span>';
-            }
 
             let firstIdx = i;
             while (firstIdx > 0 && sorted[firstIdx - 1].points === p.points) firstIdx--;
             const isTied = (i > 0 && sorted[i-1].points === p.points) || (i < sorted.length-1 && sorted[i+1].points === p.points);
             const rankLabel = isTied ? `T${firstIdx + 1}` : currentRank;
-            
-            const ptsVal = Number(p.points);
-            const ptsDisp = Number.isInteger(ptsVal) ? ptsVal : ptsVal.toFixed(1);
+
+            const ptsDisp = Number.isInteger(p.points) ? p.points : p.points.toFixed(1);
 
             sBody.innerHTML += `
             <tr>
                 <td>${rankLabel}</td>
-                <td class="trend-col">${trendHtml}</td>
                 <td class="player-col">${getPlatformIcon(p.console)} ${p.name}</td>
-                <td>${p.eventsPlayed || 0}</td>
-                <td style="font-weight:bold; color:var(--fire-orange);">${p.wins || 0}</td>
+                <td>${p.eventsPlayed}</td>
+                <td style="font-weight:bold; color:var(--fire-orange);">${p.wins}</td>
                 <td style="font-weight:bold;" class="${accClass}">${accDisp}</td>
                 <td style="color:var(--fire-yellow); font-weight:bold;">${ptsDisp}</td>
             </tr>`;
         });
     }
 
-    function renderHistory(historyHTML) {
+    function renderHistory(pastEvents) {
         const hDiv = document.getElementById('historyContainer');
-        if (hDiv && historyHTML) { 
-            let temp = document.createElement('div');
-            temp.innerHTML = historyHTML.replace(/>\+999</g, '>--<');
-            
-            temp.querySelectorAll('.history-header').forEach(header => {
-                if (header.innerText.includes('🏆')) {
-                    header.classList.add('major-border');
-                }
+        if (!hDiv || !pastEvents || pastEvents.length === 0) return;
+
+        let html = `<h3>Weekly History</h3>`;
+
+        pastEvents.forEach((ev, idx) => {
+            const results = processEventResults(ev);
+            const majorClass = ev.isSig ? 'major-border' : '';
+            const majorTag = ev.isSig ? ' 🏆' : '';
+
+            html += `
+            <div class="history-header ${majorClass}" onclick="toggleHistory(this)">
+                <span>${ev.venue}${majorTag} (${ev.date})</span>
+            </div>
+            <div class="history-content">
+                <div class="scroller">
+                    <table>
+                        <thead>
+                            <tr><th>Pos</th><th class="player-col">Player</th><th>To Par</th><th>R1</th><th>Pts</th></tr>
+                        </thead>
+                        <tbody>`;
+
+            results.forEach(p => {
+                const toParDisp = p.toPar === 0 ? "E" : (p.toPar > 0 ? `+${p.toPar}` : p.toPar);
+                const ptsDisp = Number.isInteger(p.pts) ? p.pts : p.pts.toFixed(1);
+                html += `<tr>
+                    <td>${p.rankLabel}</td>
+                    <td class="player-col">${getPlatformIcon(p.console)} ${p.name}</td>
+                    <td class="to-par-cell ${p.toPar < 0 ? 'under-par' : (p.toPar === 0 ? 'even-par' : '')}">${toParDisp}</td>
+                    <td>${p.r1Val}</td>
+                    <td style="color:var(--fire-yellow); font-weight:bold;">${ptsDisp}</td>
+                </tr>`;
             });
 
-            temp.querySelectorAll('td').forEach(td => {
-                const val = td.innerText.trim();
-                if (val === 'E') {
-                    td.classList.add('even-par');
-                } else if (val.startsWith('-')) {
-                    td.classList.add('under-par');
-                } else if (val.startsWith('+')) {
-                    td.classList.add('over-par');
-                }
-            });
-            
-            hDiv.innerHTML = `<h3>Weekly History</h3>` + temp.innerHTML; 
-        }
+            html += `</tbody></table></div></div>`;
+        });
+
+        hDiv.innerHTML = html;
     }
 
     function toggleHistory(header) {
