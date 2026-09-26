@@ -117,7 +117,7 @@
             color: var(--text-main);
         }
         
-        .player-col, .history-content td:nth-child(2) { text-align: left !important; padding-left: 15px; font-weight: 600; }
+        .player-col { text-align: left !important; padding-left: 15px; font-weight: 600; }
         .fa-brands { font-size: 1em; vertical-align: middle; margin-right: 6px; width: 18px; text-align: center; }
         .fa-playstation { color: var(--ps-blue); } 
         .fa-xbox { color: var(--xbox-green); } 
@@ -195,7 +195,8 @@
             <thead>
                 <tr>
                     <th>Rank</th>
-                    <th class="trend-col"></th> <th class="player-col">Player</th>
+                    <th class="trend-col"></th>
+                    <th class="player-col">Player</th>
                     <th>Played</th>
                     <th>Wins</th>
                     <th>ACC</th>
@@ -215,11 +216,12 @@
             const response = await fetch('data.json');
             const data = await response.json();
             
+            // Header Info
             const headerBar = document.getElementById('headerBar');
-            document.getElementById('venueName').innerText = `🔥 ${data.venue || 'Tournament'}`;
-            document.getElementById('eventDateLabel').innerText = data.date || '';
+            document.getElementById('venueName').innerText = `🔥 ${data.currentEvent.venue || 'Tournament'}`;
+            document.getElementById('eventDateLabel').innerText = data.currentEvent.date || '';
             
-            if(data.isSig) {
+            if(data.currentEvent.isSig) {
                 headerBar.classList.add('is-major');
                 document.getElementById('sigStatus').innerHTML = '<span class="major-tag">🏆 MAJOR</span>';
             } else {
@@ -227,9 +229,18 @@
                 document.getElementById('sigStatus').innerHTML = '';
             }
 
-            renderLeaderboard(data);
-            renderStandings(data.season); 
-            renderHistory(data.history);
+            // 1. Process Current Event
+            const currentResults = processEventResults(data.currentEvent);
+            renderLeaderboard(currentResults);
+
+            // 2. Process All Past Events + Current Event for Season Standings
+            const allEvents = [...(data.pastEvents || []), data.currentEvent];
+            const seasonStats = calculateSeasonStandings(allEvents);
+            renderStandings(seasonStats);
+
+            // 3. Render Dynamic History
+            renderHistory(data.pastEvents || []);
+
         } catch (e) { console.error("Error loading data.json:", e); }
     }
 
@@ -245,18 +256,16 @@
         return isSig ? base * 2 : base;
     }
 
-    function renderLeaderboard(data) {
-        const lBody = document.getElementById('liveBody');
-        lBody.innerHTML = '';
-        const par = parseInt(data.par) || 72;
-        
-        let activePlayers = data.players.map(p => {
+    // Process player scores for a single tournament event with tie-splitting logic
+    function processEventResults(eventData) {
+        const par = parseInt(eventData.par) || 72;
+        let activePlayers = eventData.players.map(p => {
             const s = [p.r1, p.r2, p.r3, p.r4].map(v => parseInt(v)||0).filter(v => v > 0);
             const total = s.reduce((a,b) => a+b, 0);
             return { ...p, total, toPar: s.length > 0 ? total - (s.length * par) : 999, active: s.length };
         }).filter(p => p.active > 0).sort((a,b) => a.toPar - b.toPar);
 
-        // Group players by score to calculate shared tie points
+        let results = [];
         let i = 0;
         while (i < activePlayers.length) {
             let j = i;
@@ -267,111 +276,166 @@
             const tiedCount = j - i;
             let sumBasePts = 0;
             
-            // Sum points across all tied position ranks (1-indexed)
             for (let r = i + 1; r <= j; r++) {
-                sumBasePts += getBasePtsForRank(r, data.isSig);
+                sumBasePts += getBasePtsForRank(r, eventData.isSig);
             }
             
             const splitBasePts = sumBasePts / tiedCount;
             const rankLabel = tiedCount > 1 ? `T${i + 1}` : `${i + 1}`;
 
-            // Render tied group
             for (let k = i; k < j; k++) {
                 const p = activePlayers[k];
-                const bVal = data.isSig ? 20 : 10;
+                const bVal = eventData.isSig ? 20 : 10;
                 const bonus = ((parseInt(p.birdies) > 0) ? bVal : 0) + (p.isLow ? bVal : 0);
                 const finalPts = splitBasePts + bonus;
-                const toParDisp = p.toPar === 0 ? "E" : (p.toPar > 0 ? `+${p.toPar}` : p.toPar);
 
-                lBody.innerHTML += `<tr><td>${rankLabel}</td><td class="player-col">${getPlatformIcon(p.console)} ${p.name}</td><td class="to-par-cell ${p.toPar < 0 ? 'under-par' : ''}">${toParDisp}</td><td>${p.r1||'-'}</td><td style="color:var(--fire-yellow); font-weight:bold;">${Number.isInteger(finalPts) ? finalPts : finalPts.toFixed(1)}</td></tr>`;
+                results.push({
+                    ...p,
+                    rank: i + 1,
+                    rankLabel,
+                    pts: finalPts
+                });
             }
+            i = j;
+        }
+        return results;
+    }
 
+    function renderLeaderboard(results) {
+        const lBody = document.getElementById('liveBody');
+        lBody.innerHTML = '';
+
+        results.forEach(p => {
+            const toParDisp = p.toPar === 0 ? "E" : (p.toPar > 0 ? `+${p.toPar}` : p.toPar);
+            const ptsDisp = Number.isInteger(p.pts) ? p.pts : p.pts.toFixed(1);
+
+            lBody.innerHTML += `<tr>
+                <td>${p.rankLabel}</td>
+                <td class="player-col">${getPlatformIcon(p.console)} ${p.name}</td>
+                <td class="to-par-cell ${p.toPar < 0 ? 'under-par' : (p.toPar === 0 ? 'even-par' : '')}">${toParDisp}</td>
+                <td>${p.r1||'-'}</td>
+                <td style="color:var(--fire-yellow); font-weight:bold;">${ptsDisp}</td>
+            </tr>`;
+        });
+    }
+
+    // Calculates overall cumulative season stats across all played events
+    function calculateSeasonStandings(allEvents) {
+        const stats = {};
+
+        // Calculate up to previous event to get prevRank
+        const previousEvents = allEvents.slice(0, -1);
+        const prevStandingsMap = {};
+        
+        if (previousEvents.length > 0) {
+            const prevSeason = calculateSeasonStandings(previousEvents);
+            prevSeason.forEach((p, idx) => {
+                prevStandingsMap[p.name] = idx + 1;
+            });
+        }
+
+        allEvents.forEach((event) => {
+            const eventResults = processEventResults(event);
+            eventResults.forEach(p => {
+                if (!stats[p.name]) {
+                    stats[p.name] = {
+                        name: p.name,
+                        console: p.console,
+                        points: 0,
+                        eventsPlayed: 0,
+                        wins: 0,
+                        acc: 0,
+                        prevRank: prevStandingsMap[p.name] || null
+                    };
+                }
+
+                stats[p.name].points += p.pts;
+                stats[p.name].eventsPlayed += 1;
+                stats[p.name].acc += p.toPar;
+                if (p.rank === 1) stats[p.name].wins += 1;
+            });
+        });
+
+        return Object.values(stats).sort((a,b) => b.points - a.points);
+    }
+
+    function renderStandings(sorted) {
+        const sBody = document.getElementById('seasonBody');
+        if (!sBody) return;
+        sBody.innerHTML = '';
+
+        let i = 0;
+        while (i < sorted.length) {
+            let j = i;
+            while (j < sorted.length && sorted[j].points === sorted[i].points) j++;
+            
+            const tiedCount = j - i;
+            const rankLabel = tiedCount > 1 ? `T${i + 1}` : `${i + 1}`;
+
+            for (let k = i; k < j; k++) {
+                const p = sorted[k];
+                const currentRank = i + 1;
+                const previousRank = p.prevRank || currentRank;
+                
+                let trendHtml = '<span class="rank-steady">●</span>';
+                if (currentRank < previousRank) {
+                    trendHtml = '<span class="rank-up"><i class="fa-solid fa-caret-up"></i></span>';
+                } else if (currentRank > previousRank) {
+                    trendHtml = '<span class="rank-down"><i class="fa-solid fa-caret-down"></i></span>';
+                }
+
+                const accDisp = p.acc === 0 ? "E" : (p.acc > 0 ? `+${p.acc}` : p.acc);
+                const accClass = p.acc < 0 ? "under-par" : (p.acc === 0 ? "even-par" : "");
+                const ptsDisp = Number.isInteger(p.points) ? p.points : p.points.toFixed(1);
+
+                sBody.innerHTML += `<tr>
+                    <td>${rankLabel}</td>
+                    <td class="trend-col">${trendHtml}</td>
+                    <td class="player-col">${getPlatformIcon(p.console)} ${p.name}</td>
+                    <td>${p.eventsPlayed}</td>
+                    <td style="font-weight:bold; color:var(--fire-orange);">${p.wins}</td>
+                    <td style="font-weight:bold;" class="${accClass}">${accDisp}</td>
+                    <td style="color:var(--fire-yellow); font-weight:bold;">${ptsDisp}</td>
+                </tr>`;
+            }
             i = j;
         }
     }
 
-    function renderStandings(seasonData) {
-		const sBody = document.getElementById('seasonBody');
-		if (!sBody || !seasonData) return;
-		
-		// Sort players by total points descending
-		const sorted = Object.entries(seasonData).map(([name, info]) => ({ 
-			name, 
-			...info 
-		})).sort((a, b) => b.points - a.points);
+    function renderHistory(pastEvents) {
+        const hContainer = document.getElementById('historyContainer');
+        if (!hContainer || pastEvents.length === 0) return;
 
-		sBody.innerHTML = '';
-
-		let i = 0;
-		while (i < sorted.length) {
-			let j = i;
-			// Group players who are tied on points
-			while (j < sorted.length && sorted[j].points === sorted[i].points) {
-				j++;
-			}
-			
-			const tiedCount = j - i;
-			const rankLabel = tiedCount > 1 ? `T${i + 1}` : `${i + 1}`;
-
-			for (let k = i; k < j; k++) {
-				const p = sorted[k];
-				const previousRank = parseInt(p.prevRank) || (i + 1);
-				const currentRank = i + 1;
-				const accVal = p.acc || 0;
-				const accDisp = accVal === 0 ? "E" : (accVal > 0 ? `+${accVal}` : accVal);
-				const accClass = accVal < 0 ? "under-par" : (accVal === 0 ? "even-par" : "");
-				
-				let trendHtml = '<span class="rank-steady">●</span>';
-				if (currentRank < previousRank) {
-					trendHtml = '<span class="rank-up"><i class="fa-solid fa-caret-up"></i></span>';
-				} else if (currentRank > previousRank) {
-					trendHtml = '<span class="rank-down"><i class="fa-solid fa-caret-down"></i></span>';
-				}
-
-				const ptsVal = Number(p.points);
-				const ptsDisp = Number.isInteger(ptsVal) ? ptsVal : ptsVal.toFixed(1);
-
-				sBody.innerHTML += `
-				<tr>
-					<td>${rankLabel}</td>
-					<td class="trend-col">${trendHtml}</td>
-					<td class="player-col">${getPlatformIcon(p.console)} ${p.name}</td>
-					<td>${p.eventsPlayed || 0}</td>
-					<td style="font-weight:bold; color:var(--fire-orange);">${p.wins || 0}</td>
-					<td style="font-weight:bold;" class="${accClass}">${accDisp}</td>
-					<td style="color:var(--fire-yellow); font-weight:bold;">${ptsDisp}</td>
-				</tr>`;
-			}
-
-			i = j;
-		}
-	}
-
-    function renderHistory(historyHTML) {
-        const hDiv = document.getElementById('historyContainer');
-        if (hDiv && historyHTML) { 
-            let temp = document.createElement('div');
-            temp.innerHTML = historyHTML.replace(/>\+999</g, '>--<');
+        let html = `<h3>Weekly History</h3>`;
+        
+        // Display past events with most recent first
+        [...pastEvents].reverse().forEach(event => {
+            const results = processEventResults(event);
+            const isMajor = event.isSig ? "major-border" : "";
             
-            temp.querySelectorAll('.history-header').forEach(header => {
-                if (header.innerText.includes('🏆')) {
-                    header.classList.add('major-border');
-                }
+            html += `<div class="history-header ${isMajor}" onclick="toggleHistory(this)">
+                ${event.venue} (${event.date}) ${event.isSig ? '🏆' : ''}
+            </div>
+            <div class="history-content">
+                <table>
+                    <tr><th>Pos</th><th class="player-col">Player</th><th>Par</th><th>Tot</th></tr>`;
+            
+            results.forEach(p => {
+                const toParDisp = p.toPar === 0 ? "E" : (p.toPar > 0 ? `+${p.toPar}` : p.toPar);
+                const parClass = p.toPar < 0 ? "under-par" : (p.toPar === 0 ? "even-par" : "over-par");
+
+                html += `<tr>
+                    <td>${p.rankLabel}</td>
+                    <td class="player-col">${getPlatformIcon(p.console)} ${p.name}</td>
+                    <td class="${parClass}">${toParDisp}</td>
+                    <td>${p.total}</td>
+                </tr>`;
             });
 
-            temp.querySelectorAll('td').forEach(td => {
-                const val = td.innerText.trim();
-                if (val === 'E') {
-                    td.classList.add('even-par');
-                } else if (val.startsWith('-')) {
-                    td.classList.add('under-par');
-                } else if (val.startsWith('+')) {
-                    td.classList.add('over-par');
-                }
-            });
-            
-            hDiv.innerHTML = `<h3>Weekly History</h3>` + temp.innerHTML; 
-        }
+            html += `</table></div>`;
+        });
+
+        hContainer.innerHTML = html;
     }
 
     function toggleHistory(header) {
@@ -380,6 +444,7 @@
         document.querySelectorAll('.history-content').forEach(c => c.style.display = "none");
         content.style.display = isVisible ? "none" : "block";
     }
+
     window.onload = loadLeaderboard;
 </script>
 </body>
