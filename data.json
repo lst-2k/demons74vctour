@@ -1,13 +1,25 @@
 {
-  "venue": "Muirfield The Open LIDAR",
-  "startDate": "2026-09-20",
-  "endDate": "2026-09-22",
-  "par": 71,
+  "venue": "Harry's Hill",
+  "startDate": "2026-09-23",
+  "endDate": "2026-09-25",
+  "par": 72,
   "isSig": false,
   "players": [
     {
-      "name": "alegiuvadoita",
-      "console": "PC",
+      "name": "colly45",
+      "console": "Xbox",
+      "r1": "63",
+      "r2": "",
+      "r3": "",
+      "r4": "",
+      "total": 63,
+      "birdies": "",
+      "isLow": false,
+      "toParVal": -9
+    },
+    {
+      "name": "keep_of_kalessin",
+      "console": "PS",
       "r1": "68",
       "r2": "",
       "r3": "",
@@ -15,23 +27,11 @@
       "total": 68,
       "birdies": "",
       "isLow": false,
-      "toParVal": -3
+      "toParVal": -4
     },
     {
-      "name": "colly45",
-      "console": "Xbox",
-      "r1": "69",
-      "r2": "",
-      "r3": "",
-      "r4": "",
-      "total": 69,
-      "birdies": "",
-      "isLow": false,
-      "toParVal": -2
-    },
-    {
-      "name": "Keep_of_Kalessin",
-      "console": "PS",
+      "name": "alegiuvadoita",
+      "console": "PC",
       "r1": "71",
       "r2": "",
       "r3": "",
@@ -39,7 +39,19 @@
       "total": 71,
       "birdies": "",
       "isLow": false,
-      "toParVal": 0
+      "toParVal": -1
+    },
+    {
+      "name": "hammers1man",
+      "console": "PC",
+      "r1": "71",
+      "r2": "",
+      "r3": "",
+      "r4": "",
+      "total": 71,
+      "birdies": "",
+      "isLow": false,
+      "toParVal": -1
     },
     {
       "name": "X3offtheTee",
@@ -51,11 +63,23 @@
       "total": 71,
       "birdies": "",
       "isLow": false,
-      "toParVal": 0
+      "toParVal": -1
     },
     {
       "name": "Demonondalinks",
       "console": "Xbox",
+      "r1": "73",
+      "r2": "",
+      "r3": "",
+      "r4": "",
+      "total": 73,
+      "birdies": "",
+      "isLow": false,
+      "toParVal": 1
+    },
+    {
+      "name": "Hoplinkz",
+      "console": "PS",
       "r1": "74",
       "r2": "",
       "r3": "",
@@ -63,11 +87,11 @@
       "total": 74,
       "birdies": "",
       "isLow": false,
-      "toParVal": 3
+      "toParVal": 2
     },
     {
-      "name": "hammers1man",
-      "console": "PC",
+      "name": "MR LONGPOLEx",
+      "console": "Xbox",
       "r1": "75",
       "r2": "",
       "r3": "",
@@ -75,81 +99,97 @@
       "total": 75,
       "birdies": "",
       "isLow": false,
-      "toParVal": 4
+      "toParVal": 3
     },
     {
-      "name": "BaconJunkie1",
+      "name": "Polekatt",
       "console": "PC",
-      "r1": "104",
+      "r1": "81",
       "r2": "",
       "r3": "",
       "r4": "",
-      "total": 104,
+      "total": 81,
       "birdies": "",
       "isLow": false,
-      "toParVal": 33
+      "toParVal": 9
     }
   ],
   "backupSeason": {},
   "backupHistory": "",
-  "date": "2026-09-20 to 2026-09-22",
+  "date": "2026-09-23 to 2026-09-25",
   "season": {
-    "alegiuvadoita": {
-      "points": 200,
-      "console": "PC",
-      "eventsPlayed": 1,
-      "wins": 1,
-      "acc": -3,
-      "prevRank": 1
-    },
     "colly45": {
-      "points": 175,
+      "points": 200,
       "console": "Xbox",
       "eventsPlayed": 1,
-      "wins": 0,
-      "acc": -2,
+      "wins": 1,
+      "acc": -9,
       "prevRank": 1
     },
-    "Keep_of_Kalessin": {
-      "points": 125,
+    "keep_of_kalessin": {
+      "points": 175,
       "console": "PS",
       "eventsPlayed": 1,
       "wins": 0,
-      "acc": 0,
+      "acc": -4,
+      "prevRank": 1
+    },
+    "alegiuvadoita": {
+      "points": 150,
+      "console": "PC",
+      "eventsPlayed": 1,
+      "wins": 0,
+      "acc": -1,
+      "prevRank": 1
+    },
+    "hammers1man": {
+      "points": 150,
+      "console": "PC",
+      "eventsPlayed": 1,
+      "wins": 0,
+      "acc": -1,
       "prevRank": 1
     },
     "X3offtheTee": {
-      "points": 125,
+      "points": 150,
       "console": "Xbox",
       "eventsPlayed": 1,
       "wins": 0,
-      "acc": 0,
+      "acc": -1,
       "prevRank": 1
     },
     "Demonondalinks": {
-      "points": 90,
+      "points": 80,
+      "console": "Xbox",
+      "eventsPlayed": 1,
+      "wins": 0,
+      "acc": 1,
+      "prevRank": 1
+    },
+    "Hoplinkz": {
+      "points": 70,
+      "console": "PS",
+      "eventsPlayed": 1,
+      "wins": 0,
+      "acc": 2,
+      "prevRank": 1
+    },
+    "MR LONGPOLEx": {
+      "points": 60,
       "console": "Xbox",
       "eventsPlayed": 1,
       "wins": 0,
       "acc": 3,
       "prevRank": 1
     },
-    "hammers1man": {
-      "points": 80,
+    "Polekatt": {
+      "points": 50,
       "console": "PC",
       "eventsPlayed": 1,
       "wins": 0,
-      "acc": 4,
-      "prevRank": 1
-    },
-    "BaconJunkie1": {
-      "points": 70,
-      "console": "PC",
-      "eventsPlayed": 1,
-      "wins": 0,
-      "acc": 33,
+      "acc": 9,
       "prevRank": 1
     }
   },
-  "history": "<div class=\"history-header\" onclick=\"toggleHistory(this)\">Muirfield The Open LIDAR (2026-09-20 to 2026-09-22) </div><div class=\"history-content\"><table><tr><th>Pos</th><th>Player</th><th>Par</th><th>Tot</th></tr><tr><td>1</td><td>alegiuvadoita</td><td>-3</td><td>68</td></tr><tr><td>2</td><td>colly45</td><td>-2</td><td>69</td></tr><tr><td>T3</td><td>Keep_of_Kalessin</td><td>E</td><td>71</td></tr><tr><td>T3</td><td>X3offtheTee</td><td>E</td><td>71</td></tr><tr><td>5</td><td>Demonondalinks</td><td>+3</td><td>74</td></tr><tr><td>6</td><td>hammers1man</td><td>+4</td><td>75</td></tr><tr><td>7</td><td>BaconJunkie1</td><td>+33</td><td>104</td></tr></table></div>"
+  "history": "<div class=\"history-header\" onclick=\"toggleHistory(this)\">Harry's Hill (2026-09-23 to 2026-09-25) </div><div class=\"history-content\"><table><tr><th>Pos</th><th>Player</th><th>Par</th><th>Tot</th></tr><tr><td>1</td><td>colly45</td><td>-9</td><td>63</td></tr><tr><td>2</td><td>keep_of_kalessin</td><td>-4</td><td>68</td></tr><tr><td>T3</td><td>alegiuvadoita</td><td>-1</td><td>71</td></tr><tr><td>T3</td><td>hammers1man</td><td>-1</td><td>71</td></tr><tr><td>T3</td><td>X3offtheTee</td><td>-1</td><td>71</td></tr><tr><td>6</td><td>Demonondalinks</td><td>+1</td><td>73</td></tr><tr><td>7</td><td>Hoplinkz</td><td>+2</td><td>74</td></tr><tr><td>8</td><td>MR LONGPOLEx</td><td>+3</td><td>75</td></tr><tr><td>9</td><td>Polekatt</td><td>+9</td><td>81</td></tr></table></div>"
 }
