@@ -119,52 +119,52 @@
   "date": "2026-09-23 to 2026-09-25",
   "season": {
     "colly45": {
-      "points": 200,
+      "points": 375,
       "console": "Xbox",
-      "eventsPlayed": 1,
+      "eventsPlayed": 2,
       "wins": 1,
-      "acc": -9,
-      "prevRank": 1
+      "acc": -11,
+      "prevRank": 2
     },
-    "keep_of_kalessin": {
-      "points": 175,
-      "console": "PS",
-      "eventsPlayed": 1,
-      "wins": 0,
+    "alegiuvadoita": {
+      "points": 313.3,
+      "console": "PC",
+      "eventsPlayed": 2,
+      "wins": 1,
       "acc": -4,
       "prevRank": 1
     },
-    "alegiuvadoita": {
-      "points": 150,
-      "console": "PC",
-      "eventsPlayed": 1,
+    "keep_of_kalessin": {
+      "points": 300,
+      "console": "PS",
+      "eventsPlayed": 2,
       "wins": 0,
-      "acc": -1,
-      "prevRank": 1
-    },
-    "hammers1man": {
-      "points": 150,
-      "console": "PC",
-      "eventsPlayed": 1,
-      "wins": 0,
-      "acc": -1,
-      "prevRank": 1
+      "acc": -8,
+      "prevRank": 3
     },
     "X3offtheTee": {
-      "points": 150,
+      "points": 238.3,
       "console": "Xbox",
-      "eventsPlayed": 1,
+      "eventsPlayed": 2,
       "wins": 0,
-      "acc": -1,
-      "prevRank": 1
+      "acc": -2,
+      "prevRank": 3
+    },
+    "hammers1man": {
+      "points": 193.3,
+      "console": "PC",
+      "eventsPlayed": 2,
+      "wins": 0,
+      "acc": 3,
+      "prevRank": 6
     },
     "Demonondalinks": {
-      "points": 80,
+      "points": 170,
       "console": "Xbox",
-      "eventsPlayed": 1,
+      "eventsPlayed": 2,
       "wins": 0,
-      "acc": 1,
-      "prevRank": 1
+      "acc": 4,
+      "prevRank": 5
     },
     "Hoplinkz": {
       "points": 70,
@@ -172,7 +172,15 @@
       "eventsPlayed": 1,
       "wins": 0,
       "acc": 2,
-      "prevRank": 1
+      "prevRank": 7
+    },
+    "BaconJunkie1": {
+      "points": 70,
+      "console": "PC",
+      "eventsPlayed": 1,
+      "wins": 0,
+      "acc": 33,
+      "prevRank": 7
     },
     "MR LONGPOLEx": {
       "points": 60,
@@ -180,7 +188,7 @@
       "eventsPlayed": 1,
       "wins": 0,
       "acc": 3,
-      "prevRank": 1
+      "prevRank": 8
     },
     "Polekatt": {
       "points": 50,
@@ -188,8 +196,8 @@
       "eventsPlayed": 1,
       "wins": 0,
       "acc": 9,
-      "prevRank": 1
+      "prevRank": 9
     }
   },
-  "history": "<div class=\"history-header\" onclick=\"toggleHistory(this)\">Harry's Hill (2026-09-23 to 2026-09-25) </div><div class=\"history-content\"><table><tr><th>Pos</th><th>Player</th><th>Par</th><th>Tot</th></tr><tr><td>1</td><td>colly45</td><td>-9</td><td>63</td></tr><tr><td>2</td><td>keep_of_kalessin</td><td>-4</td><td>68</td></tr><tr><td>T3</td><td>alegiuvadoita</td><td>-1</td><td>71</td></tr><tr><td>T3</td><td>hammers1man</td><td>-1</td><td>71</td></tr><tr><td>T3</td><td>X3offtheTee</td><td>-1</td><td>71</td></tr><tr><td>6</td><td>Demonondalinks</td><td>+1</td><td>73</td></tr><tr><td>7</td><td>Hoplinkz</td><td>+2</td><td>74</td></tr><tr><td>8</td><td>MR LONGPOLEx</td><td>+3</td><td>75</td></tr><tr><td>9</td><td>Polekatt</td><td>+9</td><td>81</td></tr></table></div>"
+  "history": "<div class=\"history-header\" onclick=\"toggleHistory(this)\">Harry's Hill (2026-09-23 to 2026-09-25)</div><div class=\"history-content\"><table><tr><th>Pos</th><th>Player</th><th>Par</th><th>Tot</th></tr><tr><td>1</td><td>colly45</td><td>-9</td><td>63</td></tr><tr><td>2</td><td>keep_of_kalessin</td><td>-4</td><td>68</td></tr><tr><td>T3</td><td>alegiuvadoita</td><td>-1</td><td>71</td></tr><tr><td>T3</td><td>hammers1man</td><td>-1</td><td>71</td></tr><tr><td>T3</td><td>X3offtheTee</td><td>-1</td><td>71</td></tr><tr><td>6</td><td>Demonondalinks</td><td>+1</td><td>73</td></tr><tr><td>7</td><td>Hoplinkz</td><td>+2</td><td>74</td></tr><tr><td>8</td><td>MR LONGPOLEx</td><td>+3</td><td>75</td></tr><tr><td>9</td><td>Polekatt</td><td>+9</td><td>81</td></tr></table></div><div class=\"history-header\" onclick=\"toggleHistory(this)\">Week 1 Event</div><div class=\"history-content\"><table><tr><th>Pos</th><th>Player</th><th>Par</th><th>Tot</th></tr><tr><td>1</td><td>alegiuvadoita</td><td>-3</td><td>68</td></tr><tr><td>2</td><td>colly45</td><td>-2</td><td>69</td></tr><tr><td>T3</td><td>keep_of_kalessin</td><td>E</td><td>71</td></tr><tr><td>T3</td><td>X3offtheTee</td><td>E</td><td>71</td></tr><tr><td>5</td><td>Demonondalinks</td><td>+3</td><td>74</td></tr><tr><td>6</td><td>hammers1man</td><td>+4</td><td>75</td></tr><tr><td>7</td><td>BaconJunkie1</td><td>+33</td><td>104</td></tr></table></div>"
 }
