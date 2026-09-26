@@ -5,31 +5,95 @@
     "par": 72,
     "isSig": false,
     "players": [
-      { "name": "colly45", "console": "Xbox", "r1": "63" },
-      { "name": "keep_of_kalessin", "console": "PS", "r1": "68" },
-      { "name": "alegiuvadoita", "console": "PC", "r1": "71" },
-      { "name": "hammers1man", "console": "PC", "r1": "71" },
-      { "name": "X3offtheTee", "console": "Xbox", "r1": "71" },
-      { "name": "Demonondalinks", "console": "Xbox", "r1": "73" },
-      { "name": "Hoplinkz", "console": "PS", "r1": "74" },
-      { "name": "MR LONGPOLEx", "console": "Xbox", "r1": "75" },
-      { "name": "Polekatt", "console": "PC", "r1": "81" }
+      {
+        "name": "colly45",
+        "console": "Xbox",
+        "r1": "63"
+      },
+      {
+        "name": "keep_of_kalessin",
+        "console": "PS",
+        "r1": "68"
+      },
+      {
+        "name": "alegiuvadoita",
+        "console": "PC",
+        "r1": "71"
+      },
+      {
+        "name": "X3offtheTee",
+        "console": "Xbox",
+        "r1": "71"
+      },
+      {
+        "name": "hammers1man",
+        "console": "PC",
+        "r1": "71"
+      },
+      {
+        "name": "Demonondalinks",
+        "console": "Xbox",
+        "r1": "73"
+      },
+      {
+        "name": "Hoplinkz",
+        "console": "PS",
+        "r1": "74"
+      },
+      {
+        "name": "MR LONGPOLEx",
+        "console": "Xbox",
+        "r1": "75"
+      },
+      {
+        "name": "Polekatt",
+        "console": "PC",
+        "r1": "81"
+      }
     ]
   },
   "pastEvents": [
     {
-      "venue": "Week 1 Event",
-      "date": "2026-09-16 to 2026-09-18",
-      "par": 72,
+      "venue": "Muirfield, The Open",
+      "date": "2026-09-20 to 2026-09-22",
+      "par": 71,
       "isSig": false,
       "players": [
-        { "name": "alegiuvadoita", "console": "PC", "r1": "68" },
-        { "name": "colly45", "console": "Xbox", "r1": "69" },
-        { "name": "keep_of_kalessin", "console": "PS", "r1": "71" },
-        { "name": "X3offtheTee", "console": "Xbox", "r1": "71" },
-        { "name": "Demonondalinks", "console": "Xbox", "r1": "74" },
-        { "name": "hammers1man", "console": "PC", "r1": "75" },
-        { "name": "BaconJunkie1", "console": "PC", "r1": "104" }
+        {
+          "name": "alegiuvadoita",
+          "console": "PC",
+          "r1": "68"
+        },
+        {
+          "name": "colly45",
+          "console": "Xbox",
+          "r1": "69"
+        },
+        {
+          "name": "X3offtheTee",
+          "console": "Xbox",
+          "r1": "71"
+        },
+        {
+          "name": "keep_of_kalessin",
+          "console": "PS",
+          "r1": "71"
+        },
+        {
+          "name": "Demonondalinks",
+          "console": "Xbox",
+          "r1": "74"
+        },
+        {
+          "name": "hammers1man",
+          "console": "PC",
+          "r1": "75"
+        },
+        {
+          "name": "BaconJunkie1",
+          "console": "PC",
+          "r1": "104"
+        }
       ]
     }
   ]
