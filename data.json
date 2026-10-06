@@ -1,61 +1,46 @@
 {
   "currentEvent": {
-    "venue": "Harry's Hill",
-    "date": "2026-09-23 to 2026-09-25",
+    "venue": "Brabazon @The Belfry",
+    "date": "2026-10-02 to 2026-10-04",
     "par": 72,
-    "isSig": false,
+    "isSig": true,
     "players": [
       {
-        "name": "colly45",
+        "name": "Colly45x",
         "console": "Xbox",
-        "r1": "63"
+        "r1": "69"
       },
       {
-        "name": "keep_of_kalessin",
-        "console": "PS",
-        "r1": "68"
+        "name": "GbWaCkErGuY",
+        "console": "Xbox",
+        "r1": "69"
       },
       {
         "name": "alegiuvadoita",
         "console": "PC",
-        "r1": "71"
-      },
-      {
-        "name": "X3offtheTee",
-        "console": "Xbox",
-        "r1": "71"
+        "r1": "75"
       },
       {
         "name": "hammers1man",
         "console": "PC",
-        "r1": "71"
+        "r1": "76"
+      },
+      {
+        "name": "keep_of_kalessin",
+        "console": "PS",
+        "r1": "80"
       },
       {
         "name": "Demonondalinks",
         "console": "Xbox",
-        "r1": "73"
-      },
-      {
-        "name": "Hoplinkz",
-        "console": "PS",
-        "r1": "74"
-      },
-      {
-        "name": "MR LONGPOLEx",
-        "console": "Xbox",
-        "r1": "75"
-      },
-      {
-        "name": "Polekatt",
-        "console": "PC",
-        "r1": "81"
+        "r1": "85"
       }
     ]
   },
   "pastEvents": [
     {
       "venue": "Muirfield, The Open",
-      "date": "2026-09-20 to 2026-09-22",
+      "date": "2026-09-20 to 2026-09-23",
       "par": 71,
       "isSig": false,
       "players": [
@@ -65,7 +50,7 @@
           "r1": "68"
         },
         {
-          "name": "colly45",
+          "name": "Colly45x",
           "console": "Xbox",
           "r1": "69"
         },
@@ -93,6 +78,135 @@
           "name": "BaconJunkie1",
           "console": "PC",
           "r1": "104"
+        }
+      ]
+    },
+    {
+      "venue": "Harry's Hill",
+      "date": "2026-09-23 to 2026-09-25",
+      "par": 72,
+      "isSig": false,
+      "players": [
+        {
+          "name": "Colly45x",
+          "console": "Xbox",
+          "r1": "63"
+        },
+        {
+          "name": "keep_of_kalessin",
+          "console": "PS",
+          "r1": "68"
+        },
+        {
+          "name": "alegiuvadoita",
+          "console": "PC",
+          "r1": "71"
+        },
+        {
+          "name": "X3offtheTee",
+          "console": "Xbox",
+          "r1": "71"
+        },
+        {
+          "name": "hammers1man",
+          "console": "PC",
+          "r1": "71"
+        },
+        {
+          "name": "Demonondalinks",
+          "console": "Xbox",
+          "r1": "73"
+        },
+        {
+          "name": "Hoplinkz",
+          "console": "PS",
+          "r1": "74"
+        },
+        {
+          "name": "MR LONGPOLEx",
+          "console": "Xbox",
+          "r1": "75"
+        },
+        {
+          "name": "Polekatt",
+          "console": "PC",
+          "r1": "81"
+        }
+      ]
+    },
+    {
+      "venue": "Emery Beach",
+      "date": "2026-09-26 to 2026-09-28",
+      "par": 71,
+      "isSig": false,
+      "players": [
+        {
+          "name": "Colly45x",
+          "console": "Xbox",
+          "r1": "65"
+        },
+        {
+          "name": "alegiuvadoita",
+          "console": "PC",
+          "r1": "65"
+        },
+        {
+          "name": "X3offtheTee",
+          "console": "Xbox",
+          "r1": "68"
+        },
+        {
+          "name": "Demonondalinks",
+          "console": "Xbox",
+          "r1": "70"
+        },
+        {
+          "name": "MR LONGPOLEx",
+          "console": "Xbox",
+          "r1": "71"
+        },
+        {
+          "name": "keep_of_kalessin",
+          "console": "PS",
+          "r1": "74"
+        },
+        {
+          "name": "hammers1man",
+          "console": "PC",
+          "r1": "77"
+        },
+        {
+          "name": "Polekatt",
+          "console": "PC",
+          "r1": "84"
+        }
+      ]
+    },
+    {
+      "venue": "NGLA",
+      "date": "2026-09-29 to 2026-10-01",
+      "par": 72,
+      "isSig": false,
+      "players": [
+        {
+          "name": "Colly45x",
+          "console": "Xbox",
+          "r1": "64"
+        },
+        {
+          "name": "Demonondalinks",
+          "console": "Xbox",
+          "r1": "73"
+        },
+        {
+          "name": "keep_of_kalessin",
+          "console": "PS",
+          "r1": "73"
+        },
+        {
+          "name": "Gordo",
+          "console": "PS",
+          "r1": "74"
         }
       ]
     }
