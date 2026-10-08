@@ -320,7 +320,9 @@
                 standings[p.name].eventsPlayed += 1;
                 standings[p.name].accToPar += p.toPar;
                 standings[p.name].points += p.pts;
-                if (p.rankPos === 1 && p.rankLabel === "1") {
+                
+                // Award a win to anyone finishing in 1st place (including ties)
+                if (p.rankPos === 1) {
                     standings[p.name].wins += 1;
                 }
             });
@@ -365,7 +367,7 @@
 
         let html = `<h3>Weekly History</h3>`;
 
-        pastEvents.forEach((ev, idx) => {
+        pastEvents.forEach((ev) => {
             const results = processEventResults(ev);
             const majorClass = ev.isSig ? 'major-border' : '';
             const majorTag = ev.isSig ? ' 🏆' : '';
