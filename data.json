@@ -1,39 +1,29 @@
 {
   "currentEvent": {
-    "venue": "Brabazon @The Belfry",
-    "date": "2026-10-02 to 2026-10-04",
+    "venue": "Silver Srand",
+    "date": "2026-10-05 to 2026-10-07",
     "par": 72,
-    "isSig": true,
+    "isSig": false,
     "players": [
       {
         "name": "Colly45x",
         "console": "Xbox",
-        "r1": "69"
+        "r1": "68"
       },
       {
-        "name": "GbWaCkErGuY",
-        "console": "Xbox",
-        "r1": "69"
-      },
-      {
-        "name": "alegiuvadoita",
-        "console": "PC",
-        "r1": "75"
-      },
-      {
-        "name": "hammers1man",
-        "console": "PC",
-        "r1": "76"
-      },
-      {
-        "name": "keep_of_kalessin",
+        "name": "Hoplinkz",
         "console": "PS",
-        "r1": "80"
+        "r1": "69"
       },
       {
         "name": "Demonondalinks",
         "console": "Xbox",
-        "r1": "85"
+        "r1": "73"
+      },
+      {
+        "name": "keep_of_kalessin",
+        "console": "PS",
+        "r1": "77"
       }
     ]
   },
@@ -207,6 +197,44 @@
           "name": "Gordo",
           "console": "PS",
           "r1": "74"
+        }
+      ]
+    },
+    {
+      "venue": "Brabazon @The Belfry",
+      "date": "2026-10-02 to 2026-10-04",
+      "par": 72,
+      "isSig": true,
+      "players": [
+        {
+          "name": "Colly45x",
+          "console": "Xbox",
+          "r1": "69"
+        },
+        {
+          "name": "GbWaCkErGuY",
+          "console": "Xbox",
+          "r1": "69"
+        },
+        {
+          "name": "alegiuvadoita",
+          "console": "PC",
+          "r1": "75"
+        },
+        {
+          "name": "hammers1man",
+          "console": "PC",
+          "r1": "76"
+        },
+        {
+          "name": "keep_of_kalessin",
+          "console": "PS",
+          "r1": "80"
+        },
+        {
+          "name": "Demonondalinks",
+          "console": "Xbox",
+          "r1": "85"
         }
       ]
     }
