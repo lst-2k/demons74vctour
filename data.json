@@ -1,28 +1,33 @@
 {
   "currentEvent": {
-    "venue": "Silver Strand",
-    "date": "2026-10-05 to 2026-10-07",
-    "par": 72,
+    "venue": "Port Ellen Open, Cairnmyre Links",
+    "date": "2026-10-11 to 2026-10-13",
+    "par": 70,
     "isSig": false,
     "players": [
       {
-        "name": "Colly45x",
+        "name": "GbWaCkErGuY",
         "console": "Xbox",
-        "r1": "68"
+        "r1": "63"
       },
       {
-        "name": "Hoplinkz",
-        "console": "PS",
-        "r1": "69"
+        "name": "alegiuvadoita",
+        "console": "PC",
+        "r1": "64"
+      },
+      {
+        "name": "Colly45x",
+        "console": "Xbox",
+        "r1": "71"
+      },
+      {
+        "name": "hammers1man",
+        "console": "PC",
+        "r1": "74"
       },
       {
         "name": "Demonondalinks",
         "console": "Xbox",
-        "r1": "73"
-      },
-      {
-        "name": "keep_of_kalessin",
-        "console": "PS",
         "r1": "77"
       }
     ]
@@ -235,6 +240,62 @@
           "name": "Demonondalinks",
           "console": "Xbox",
           "r1": "85"
+        }
+      ]
+    },
+    {
+      "venue": "Silver Strand",
+      "date": "2026-10-05 to 2026-10-07",
+      "par": 72,
+      "isSig": false,
+      "players": [
+        {
+          "name": "Colly45x",
+          "console": "Xbox",
+          "r1": "68"
+        },
+        {
+          "name": "Hoplinkz",
+          "console": "PS",
+          "r1": "69"
+        },
+        {
+          "name": "Demonondalinks",
+          "console": "Xbox",
+          "r1": "73"
+        },
+        {
+          "name": "keep_of_kalessin",
+          "console": "PS",
+          "r1": "77"
+        }
+      ]
+    },
+    {
+      "venue": "San Antonio Invitational, Canyon Springs",
+      "date": "2026-10-08 to 2026-10-10",
+      "par": 72,
+      "isSig": false,
+      "players": [
+        {
+          "name": "Colly45x",
+          "console": "Xbox",
+          "r1": "67"
+        },
+        {
+          "name": "Demonondalinks",
+          "console": "Xbox",
+          "r1": "69"
+        },
+        {
+          "name": "x3offthetee",
+          "console": "Xbox",
+          "r1": "69"
+        },
+        {
+          "name": "hammers1man",
+          "console": "PC",
+          "r1": "74"
         }
       ]
     }
