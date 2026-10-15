@@ -1,34 +1,44 @@
 {
   "currentEvent": {
-    "venue": "Port Ellen Open, Cairnmyre Links",
-    "date": "2026-10-11 to 2026-10-13",
-    "par": 70,
+    "venue": "Tot Hill Farm",
+    "date": "2026-10-13 to 2026-10-15",
+    "par": 72,
     "isSig": false,
     "players": [
       {
-        "name": "GbWaCkErGuY",
-        "console": "Xbox",
-        "r1": "63"
-      },
-      {
-        "name": "alegiuvadoita",
-        "console": "PC",
-        "r1": "64"
+        "name": "keep_of_kalessin",
+        "console": "PS",
+        "r1": "67"
       },
       {
         "name": "Colly45x",
         "console": "Xbox",
+        "r1": "69"
+      },
+      {
+        "name": "alegiuvadoita",
+        "console": "PC",
         "r1": "71"
       },
       {
         "name": "hammers1man",
         "console": "PC",
-        "r1": "74"
+        "r1": "71"
+      },
+      {
+        "name": "X3offtheTee",
+        "console": "Xbox",
+        "r1": "71"
+      },
+      {
+        "name": "Hoplinkz",
+        "console": "PS",
+        "r1": "72"
       },
       {
         "name": "Demonondalinks",
         "console": "Xbox",
-        "r1": "77"
+        "r1": "73"
       }
     ]
   },
@@ -296,6 +306,39 @@
           "name": "hammers1man",
           "console": "PC",
           "r1": "74"
+        }
+      ]
+    },
+    {
+      "venue": "Port Ellen Open, Cairnmyre Links",
+      "date": "2026-10-11 to 2026-10-13",
+      "par": 70,
+      "isSig": false,
+      "players": [
+        {
+          "name": "GbWaCkErGuY",
+          "console": "Xbox",
+          "r1": "63"
+        },
+        {
+          "name": "alegiuvadoita",
+          "console": "PC",
+          "r1": "64"
+        },
+        {
+          "name": "Colly45x",
+          "console": "Xbox",
+          "r1": "71"
+        },
+        {
+          "name": "hammers1man",
+          "console": "PC",
+          "r1": "74"
+        },
+        {
+          "name": "Demonondalinks",
+          "console": "Xbox",
+          "r1": "77"
         }
       ]
     }
