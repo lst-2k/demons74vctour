@@ -1,44 +1,34 @@
 {
   "currentEvent": {
-    "venue": "Tot Hill Farm",
-    "date": "2026-10-13 to 2026-10-15",
-    "par": 72,
+    "venue": "Sheringham GC",
+    "date": "2026-10-16 to 2026-10-18",
+    "par": 70,
     "isSig": false,
     "players": [
       {
-        "name": "keep_of_kalessin",
-        "console": "PS",
-        "r1": "67"
+        "name": "GbWaCkErGuY",
+        "console": "Xbox",
+        "r1": "62"
       },
       {
         "name": "Colly45x",
         "console": "Xbox",
-        "r1": "69"
+        "r1": "65"
       },
       {
         "name": "alegiuvadoita",
         "console": "PC",
-        "r1": "71"
-      },
-      {
-        "name": "hammers1man",
-        "console": "PC",
-        "r1": "71"
-      },
-      {
-        "name": "X3offtheTee",
-        "console": "Xbox",
-        "r1": "71"
-      },
-      {
-        "name": "Hoplinkz",
-        "console": "PS",
-        "r1": "72"
+        "r1": "69"
       },
       {
         "name": "Demonondalinks",
         "console": "Xbox",
-        "r1": "73"
+        "r1": "70"
+      },
+      {
+        "name": "X3offtheTee",
+        "console": "Xbox",
+        "r1": "72"
       }
     ]
   },
@@ -339,6 +329,49 @@
           "name": "Demonondalinks",
           "console": "Xbox",
           "r1": "77"
+        }
+      ]
+    },
+    {
+      "venue": "Tot Hill Farm",
+      "date": "2026-10-13 to 2026-10-15",
+      "par": 72,
+      "isSig": false,
+      "players": [
+        {
+          "name": "keep_of_kalessin",
+          "console": "PS",
+          "r1": "67"
+        },
+        {
+          "name": "Colly45x",
+          "console": "Xbox",
+          "r1": "69"
+        },
+        {
+          "name": "alegiuvadoita",
+          "console": "PC",
+          "r1": "71"
+        },
+        {
+          "name": "hammers1man",
+          "console": "PC",
+          "r1": "71"
+        },
+        {
+          "name": "X3offtheTee",
+          "console": "Xbox",
+          "r1": "71"
+        },
+        {
+          "name": "Hoplinkz",
+          "console": "PS",
+          "r1": "72"
+        },
+        {
+          "name": "Demonondalinks",
+          "console": "Xbox",
+          "r1": "73"
         }
       ]
     }
